@@ -9,6 +9,11 @@ import { env } from './config/env';
 import { apiRateLimiter } from './middleware/rateLimiter';
 import { errorHandler } from './middleware/errorHandler';
 import { authRoutes } from './modules/auth';
+import { branchRoutes } from './modules/branch';
+import { categoryRoutes } from './modules/category';
+import { brandRoutes } from './modules/brand';
+import { productRoutes } from './modules/product';
+import { dashboardRoutes } from './modules/dashboard';
 
 const app = express();
 
@@ -47,6 +52,11 @@ app.get('/api/health', (_req, res) => {
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/branches', branchRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/brands', brandRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Global error handler (must be last)
 app.use(errorHandler);

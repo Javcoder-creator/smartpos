@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import {
   TrendingUp,
   Receipt,
@@ -23,61 +24,41 @@ import { StatCard } from '@/components/ui/StatCard';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { Skeleton } from '@/components/ui/Feedback';
 import { useAuthStore } from '@/store/authStore';
 import { useTranslation } from '@/i18n';
-
-const chartData = [
-  { time: '09:00', sales: 420000 },
-  { time: '11:00', sales: 890000 },
-  { time: '13:00', sales: 1540000 },
-  { time: '15:00', sales: 2100000 },
-  { time: '17:00', sales: 3200000 },
-  { time: '19:00', sales: 4850000 },
-  { time: '21:00', sales: 5420000 },
-];
-
-const mockRecentSales = [
-  {
-    id: 'TRX-1082',
-    time: '21:14',
-    cashier: 'Rustam Q.',
-    itemsCount: 5,
-    total: 185000,
-    paymentMethod: 'Naqd',
-    status: 'completed',
-  },
-  {
-    id: 'TRX-1081',
-    time: '21:05',
-    cashier: 'Rustam Q.',
-    itemsCount: 2,
-    total: 94000,
-    paymentMethod: 'Karta (Humo)',
-    status: 'completed',
-  },
-  {
-    id: 'TRX-1080',
-    time: '20:48',
-    cashier: 'Rustam Q.',
-    itemsCount: 11,
-    total: 420000,
-    paymentMethod: 'Karta (Uzcard)',
-    status: 'completed',
-  },
-  {
-    id: 'TRX-1079',
-    time: '20:30',
-    cashier: 'Rustam Q.',
-    itemsCount: 1,
-    total: 28000,
-    paymentMethod: 'Naqd',
-    status: 'completed',
-  },
-];
+import api from '@/lib/axios';
 
 export const DashboardPage: React.FC = () => {
   const { user } = useAuthStore();
   const { t } = useTranslation();
+
+  // Fetch real dashboard stats from backend
+  const { data: statsResponse, isLoading } = useQuery({
+    queryKey: ['dashboard-stats'],
+    queryFn: async () => {
+      const res = await api.get('/dashboard/stats');
+      return res.data.data;
+    },
+    refetchInterval: 30000, // refresh every 30s
+  });
+
+  const stats = statsResponse || {
+    todayRevenue: 0,
+    transactionsCount: 0,
+    totalProducts: 0,
+    lowStockProducts: 0,
+    recentSales: [],
+    hourlyData: [
+      { time: '09:00', sales: 0 },
+      { time: '11:00', sales: 0 },
+      { time: '13:00', sales: 0 },
+      { time: '15:00', sales: 0 },
+      { time: '17:00', sales: 0 },
+      { time: '19:00', sales: 0 },
+      { time: '21:00', sales: 0 },
+    ],
+  };
 
   const formatUZS = (val: number) => {
     return new Intl.NumberFormat('uz-UZ').format(val) + ' UZS';
@@ -117,45 +98,52 @@ export const DashboardPage: React.FC = () => {
       </div>
 
       {/* 4 Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          title={t('dashboard.todaySales')}
-          value={formatUZS(5420000)}
-          icon={<TrendingUp className="w-6 h-6" />}
-          color="accent"
-          trend="up"
-          trendValue="+18.4%"
-          subtitle="kechagiga nisbatan"
-        />
+      {isLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Skeleton className="h-28 w-full" />
+          <Skeleton className="h-28 w-full" />
+          <Skeleton className="h-28 w-full" />
+          <Skeleton className="h-28 w-full" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <StatCard
+            title={t('dashboard.todaySales')}
+            value={formatUZS(stats.todayRevenue)}
+            icon={<TrendingUp className="w-6 h-6" />}
+            color="accent"
+            trend="up"
+            trendValue="+100%"
+            subtitle="real vaqtda"
+          />
 
-        <StatCard
-          title={t('dashboard.transactionsCount')}
-          value="142 ta"
-          icon={<Receipt className="w-6 h-6" />}
-          color="primary"
-          trend="up"
-          trendValue="+12"
-          subtitle="so‘nggi smenada"
-        />
+          <StatCard
+            title={t('dashboard.transactionsCount')}
+            value={`${stats.transactionsCount} ta`}
+            icon={<Receipt className="w-6 h-6" />}
+            color="primary"
+            subtitle="bugungi cheklar"
+          />
 
-        <StatCard
-          title={t('dashboard.totalProducts')}
-          value="1,280 ta"
-          icon={<Package className="w-6 h-6" />}
-          color="info"
-          subtitle="18 ta toifada"
-        />
+          <StatCard
+            title={t('dashboard.totalProducts')}
+            value={`${stats.totalProducts} ta`}
+            icon={<Package className="w-6 h-6" />}
+            color="info"
+            subtitle="faol tovarlar"
+          />
 
-        <StatCard
-          title={t('dashboard.lowStock')}
-          value="14 ta"
-          icon={<AlertTriangle className="w-6 h-6" />}
-          color="warning"
-          trend="down"
-          trendValue="Diqqat!"
-          subtitle="buyurtma berish lozim"
-        />
-      </div>
+          <StatCard
+            title={t('dashboard.lowStock')}
+            value={`${stats.lowStockProducts} ta`}
+            icon={<AlertTriangle className="w-6 h-6" />}
+            color="warning"
+            trend={stats.lowStockProducts > 0 ? 'down' : 'neutral'}
+            trendValue={stats.lowStockProducts > 0 ? 'Kam qolgan!' : 'Me’yorda'}
+            subtitle="ombor zaxirasi"
+          />
+        </div>
+      )}
 
       {/* Main Grid: Chart & Recent Transactions */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -172,7 +160,7 @@ export const DashboardPage: React.FC = () => {
           >
             <div className="h-72 w-full pt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <AreaChart data={stats.hourlyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
@@ -226,27 +214,35 @@ export const DashboardPage: React.FC = () => {
             }
             noPadding
           >
-            <div className="divide-y divide-gray-100">
-              {mockRecentSales.map((sale) => (
-                <div key={sale.id} className="p-4 hover:bg-gray-50/70 transition-colors flex items-center justify-between">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-xs text-gray-900">{sale.id}</span>
-                      <span className="text-[11px] text-gray-400">{sale.time}</span>
+            {stats.recentSales.length === 0 ? (
+              <div className="p-8 text-center text-xs text-gray-400">
+                Hozircha sotuvlar amalga oshirilmagan
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-100">
+                {stats.recentSales.map((sale: any) => (
+                  <div key={sale.id} className="p-4 hover:bg-gray-50/70 transition-colors flex items-center justify-between">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-xs text-gray-900">{sale.saleNumber || sale.id.slice(0, 8)}</span>
+                        <span className="text-[11px] text-gray-400">
+                          {new Date(sale.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-gray-500 mt-0.5">
+                        Kassir: {sale.cashier?.firstName || 'Kassir'} &bull; {sale.branch?.name || 'Filial'}
+                      </p>
                     </div>
-                    <p className="text-[11px] text-gray-500 mt-0.5">
-                      {sale.itemsCount} dona tovar &bull; {sale.paymentMethod}
-                    </p>
+                    <div className="text-right">
+                      <p className="font-bold text-xs text-emerald-600">{formatUZS(Number(sale.totalAmount))}</p>
+                      <Badge variant="success" size="sm" className="mt-0.5">
+                        To‘langan
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-bold text-xs text-emerald-600">{formatUZS(sale.total)}</p>
-                    <Badge variant="success" size="sm" className="mt-0.5">
-                      To‘langan
-                    </Badge>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </Card>
         </div>
       </div>

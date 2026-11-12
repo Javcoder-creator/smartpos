@@ -7,6 +7,8 @@ import { LoginPage } from '@/pages/auth/LoginPage';
 import { RegisterPage } from '@/pages/auth/RegisterPage';
 import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage';
 import { DashboardPage } from '@/pages/dashboard/DashboardPage';
+import { ProductsPage } from '@/pages/products/ProductsPage';
+import { BranchesPage } from '@/pages/branches/BranchesPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { Card } from '@/components/ui/Card';
 
@@ -55,12 +57,11 @@ export const router = createBrowserRouter([
           },
           {
             path: '/products',
-            element: (
-              <ModulePlaceholder
-                title="Mahsulotlar katalogi"
-                desc="Kategoriya, brend, SKU, shtrix-kod va tovarlar bazasi"
-              />
-            ),
+            element: <ProductsPage />,
+          },
+          {
+            path: '/branches',
+            element: <BranchesPage />,
           },
           {
             path: '/inventory',

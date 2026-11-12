@@ -12,6 +12,7 @@ import {
   Wallet,
   BarChart3,
   UserCheck,
+  Store,
   Settings,
   ShieldCheck,
   ChevronLeft,
@@ -45,6 +46,7 @@ export const Sidebar: React.FC = () => {
     { label: t('sidebar.finance'), path: '/finance', icon: Wallet },
     { label: t('sidebar.reports'), path: '/reports', icon: BarChart3 },
     { label: t('sidebar.employees'), path: '/employees', icon: UserCheck },
+    { label: t('sidebar.branches'), path: '/branches', icon: Store },
     { label: t('sidebar.settings'), path: '/settings', icon: Settings },
   ];
 
