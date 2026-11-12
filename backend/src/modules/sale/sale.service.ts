@@ -132,7 +132,7 @@ export class SaleService {
       const prod = productMap.get(item.productId)!;
       const unitPrice =
         item.unitPrice !== undefined ? Number(item.unitPrice) : Number(prod.sellingPrice);
-      const purchasePrice = Number(prod.costPrice) || 0;
+      const purchasePrice = Number(prod.purchasePrice ?? (prod as any).costPrice) || 0;
       const itemDiscount = Number(item.discountAmount) || 0;
       const lineTotal = Math.max(0, item.quantity * unitPrice - itemDiscount);
 

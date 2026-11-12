@@ -13,6 +13,9 @@ import { InventoryPage } from '@/pages/inventory/InventoryPage';
 import { PurchasesPage } from '@/pages/purchases/PurchasesPage';
 import { SuppliersPage } from '@/pages/suppliers/SuppliersPage';
 import { POSPage } from '@/pages/pos/POSPage';
+import { CustomersPage } from '@/pages/customers/CustomersPage';
+import { SalesPage } from '@/pages/sales/SalesPage';
+import { FinancePage } from '@/pages/finance/FinancePage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { Card } from '@/components/ui/Card';
 
@@ -76,30 +79,15 @@ export const router = createBrowserRouter([
           },
           {
             path: '/customers',
-            element: (
-              <ModulePlaceholder
-                title="Mijozlar (CRM)"
-                desc="Mijozlar bazasi, sodiqlik ballari va qarz daftari"
-              />
-            ),
+            element: <CustomersPage />,
           },
           {
             path: '/sales',
-            element: (
-              <ModulePlaceholder
-                title="Sotuvlar tarixi"
-                desc="Barcha amalga oshirilgan tranzaksiyalar va cheklar"
-              />
-            ),
+            element: <SalesPage />,
           },
           {
             path: '/finance',
-            element: (
-              <ModulePlaceholder
-                title="Moliya va Kassa"
-                desc="Kassa smenalari, xarajatlar va foyda-zarar tahlili"
-              />
-            ),
+            element: <FinancePage />,
           },
           {
             path: '/reports',

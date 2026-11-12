@@ -21,6 +21,7 @@ import { purchaseRoutes } from './modules/purchase';
 import { shiftRoutes } from './modules/shift';
 import { saleRoutes } from './modules/sale';
 import { customerRoutes } from './modules/customer';
+import { financeRoutes } from './modules/finance';
 
 const app = express();
 
@@ -71,6 +72,7 @@ app.use('/api/purchases', purchaseRoutes);
 app.use('/api/shifts', shiftRoutes);
 app.use('/api/sales', saleRoutes);
 app.use('/api/customers', customerRoutes);
+app.use('/api/finance', financeRoutes);
 
 // Global error handler (must be last)
 app.use(errorHandler);

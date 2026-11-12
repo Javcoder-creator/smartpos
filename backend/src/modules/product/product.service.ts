@@ -189,7 +189,7 @@ export class ProductService {
           slug,
           sku,
           description: data.description,
-          purchasePrice: data.purchasePrice || 0,
+          purchasePrice: Number(data.purchasePrice ?? (data as any).costPrice) || 0,
           sellingPrice: data.sellingPrice || 0,
           wholesalePrice: data.wholesalePrice || undefined,
           minStockQty: data.minStockQty || 0,
