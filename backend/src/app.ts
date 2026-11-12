@@ -22,6 +22,8 @@ import { shiftRoutes } from './modules/shift';
 import { saleRoutes } from './modules/sale';
 import { customerRoutes } from './modules/customer';
 import { financeRoutes } from './modules/finance';
+import { reportRoutes } from './modules/report';
+import { employeeRoutes } from './modules/employee';
 
 const app = express();
 
@@ -73,6 +75,8 @@ app.use('/api/shifts', shiftRoutes);
 app.use('/api/sales', saleRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/finance', financeRoutes);
+app.use('/api/reports', reportRoutes);
+app.use('/api/employees', employeeRoutes);
 
 // Global error handler (must be last)
 app.use(errorHandler);

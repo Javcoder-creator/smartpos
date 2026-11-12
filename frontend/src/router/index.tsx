@@ -16,6 +16,8 @@ import { POSPage } from '@/pages/pos/POSPage';
 import { CustomersPage } from '@/pages/customers/CustomersPage';
 import { SalesPage } from '@/pages/sales/SalesPage';
 import { FinancePage } from '@/pages/finance/FinancePage';
+import { ReportsPage } from '@/pages/reports/ReportsPage';
+import { EmployeesPage } from '@/pages/employees/EmployeesPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { Card } from '@/components/ui/Card';
 
@@ -91,21 +93,11 @@ export const router = createBrowserRouter([
           },
           {
             path: '/reports',
-            element: (
-              <ModulePlaceholder
-                title="Hisobotlar va Tahlil"
-                desc="Savdo, tovar va rentabellik bo‘yicha batafsil hisobotlar"
-              />
-            ),
+            element: <ReportsPage />,
           },
           {
             path: '/employees',
-            element: (
-              <ModulePlaceholder
-                title="Xodimlar va rollar"
-                desc="Kassirlar, menejerlar va ularning ruxsatnomalari"
-              />
-            ),
+            element: <EmployeesPage />,
           },
           {
             path: '/settings',
