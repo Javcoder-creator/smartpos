@@ -13,6 +13,7 @@ export interface StockMovementAttributes {
   referenceType?: string;
   referenceId?: string;
   notes?: string;
+  unitCost?: number;
   userId: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -31,6 +32,7 @@ export class StockMovement extends Model<StockMovementAttributes, Partial<StockM
   public referenceType?: string;
   public referenceId?: string;
   public notes?: string;
+  public unitCost?: number;
   public userId!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;

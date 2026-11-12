@@ -45,6 +45,14 @@ export class Sale extends Model<SaleAttributes, Partial<SaleAttributes>> impleme
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
+  public items?: any[];
+  public payments?: any[];
+  public branch?: any;
+  public customer?: any;
+  public cashier?: any;
+  public user?: any;
+  public business?: any;
+
   public static initModel(sequelize: Sequelize): typeof Sale {
     Sale.init(
       {

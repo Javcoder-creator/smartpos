@@ -34,6 +34,7 @@ export class Business extends Model<BusinessAttributes, Partial<BusinessAttribut
   public settings?: Record<string, any>;
   public isActive!: boolean;
   public trialEndsAt?: Date;
+  public subscription?: any;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 

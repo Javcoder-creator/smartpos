@@ -26,6 +26,7 @@ import { reportRoutes } from './modules/report';
 import { employeeRoutes } from './modules/employee';
 import { adminRoutes } from './modules/admin';
 import { subscriptionRoutes } from './modules/subscription';
+import { paymentGatewayRoutes } from './modules/paymentGateway';
 
 const app = express();
 
@@ -81,6 +82,7 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/subscriptions', subscriptionRoutes);
+app.use('/api/webhooks/payments', paymentGatewayRoutes);
 
 // Global error handler (must be last)
 app.use(errorHandler);
