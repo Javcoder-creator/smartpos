@@ -29,3 +29,19 @@ export const authenticate = (req: Request, _res: Response, next: NextFunction): 
     }
   }
 };
+
+export const requireSuperAdmin = (req: Request, _res: Response, next: NextFunction): void => {
+  if (!req.user || req.user.role !== 'super_admin') {
+    throw new AppError('Ushbu amalni bajarish uchun Super Admin huquqi talab qilinadi', 403);
+  }
+  next();
+};
+
+export const requireRole = (allowedRoles: string[]) => {
+  return (req: Request, _res: Response, next: NextFunction): void => {
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
+      throw new AppError('Sizda ushbu amalni bajarish huquqi mavjud emas', 403);
+    }
+    next();
+  };
+};

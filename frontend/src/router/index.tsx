@@ -18,6 +18,8 @@ import { SalesPage } from '@/pages/sales/SalesPage';
 import { FinancePage } from '@/pages/finance/FinancePage';
 import { ReportsPage } from '@/pages/reports/ReportsPage';
 import { EmployeesPage } from '@/pages/employees/EmployeesPage';
+import { SettingsPage } from '@/pages/settings/SettingsPage';
+import { AdminPage } from '@/pages/admin/AdminPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { Card } from '@/components/ui/Card';
 
@@ -101,21 +103,11 @@ export const router = createBrowserRouter([
           },
           {
             path: '/settings',
-            element: (
-              <ModulePlaceholder
-                title="Tizim sozlamalari"
-                desc="Do‘kon parametrlari, chek formati va fiskal sozlamalar"
-              />
-            ),
+            element: <SettingsPage />,
           },
           {
             path: '/admin',
-            element: (
-              <ModulePlaceholder
-                title="Super Admin Paneli"
-                desc="SaaS obunalar, barcha korxonalar va platforma ko‘rsatkichlari"
-              />
-            ),
+            element: <AdminPage />,
           },
         ],
       },

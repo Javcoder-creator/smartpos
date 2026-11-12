@@ -24,6 +24,8 @@ import { customerRoutes } from './modules/customer';
 import { financeRoutes } from './modules/finance';
 import { reportRoutes } from './modules/report';
 import { employeeRoutes } from './modules/employee';
+import { adminRoutes } from './modules/admin';
+import { subscriptionRoutes } from './modules/subscription';
 
 const app = express();
 
@@ -77,6 +79,8 @@ app.use('/api/customers', customerRoutes);
 app.use('/api/finance', financeRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/employees', employeeRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/subscriptions', subscriptionRoutes);
 
 // Global error handler (must be last)
 app.use(errorHandler);
