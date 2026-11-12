@@ -14,6 +14,10 @@ import { categoryRoutes } from './modules/category';
 import { brandRoutes } from './modules/brand';
 import { productRoutes } from './modules/product';
 import { dashboardRoutes } from './modules/dashboard';
+import { warehouseRoutes } from './modules/warehouse';
+import { inventoryRoutes } from './modules/inventory';
+import { supplierRoutes } from './modules/supplier';
+import { purchaseRoutes } from './modules/purchase';
 
 const app = express();
 
@@ -57,6 +61,10 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/brands', brandRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/warehouses', warehouseRoutes);
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/suppliers', supplierRoutes);
+app.use('/api/purchases', purchaseRoutes);
 
 // Global error handler (must be last)
 app.use(errorHandler);

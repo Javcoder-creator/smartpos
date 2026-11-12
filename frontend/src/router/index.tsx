@@ -9,6 +9,9 @@ import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage';
 import { DashboardPage } from '@/pages/dashboard/DashboardPage';
 import { ProductsPage } from '@/pages/products/ProductsPage';
 import { BranchesPage } from '@/pages/branches/BranchesPage';
+import { InventoryPage } from '@/pages/inventory/InventoryPage';
+import { PurchasesPage } from '@/pages/purchases/PurchasesPage';
+import { SuppliersPage } from '@/pages/suppliers/SuppliersPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { Card } from '@/components/ui/Card';
 
@@ -65,21 +68,15 @@ export const router = createBrowserRouter([
           },
           {
             path: '/inventory',
-            element: (
-              <ModulePlaceholder
-                title="Omborxona va qoldiqlar"
-                desc="Ko‘p omborli hisob, harakatlar daftari va inventarizatsiya"
-              />
-            ),
+            element: <InventoryPage />,
           },
           {
             path: '/purchases',
-            element: (
-              <ModulePlaceholder
-                title="Kirim va Xaridlar"
-                desc="Yetkazib beruvchilar va kirim fakturalari boshqaruvi"
-              />
-            ),
+            element: <PurchasesPage />,
+          },
+          {
+            path: '/suppliers',
+            element: <SuppliersPage />,
           },
           {
             path: '/customers',

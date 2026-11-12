@@ -176,6 +176,9 @@ Purchase.belongsTo(Supplier, { foreignKey: 'supplierId', as: 'supplier' });
 Warehouse.hasMany(Purchase, { foreignKey: 'warehouseId', as: 'purchases' });
 Purchase.belongsTo(Warehouse, { foreignKey: 'warehouseId', as: 'warehouse' });
 
+User.hasMany(Purchase, { foreignKey: 'userId', as: 'purchases' });
+Purchase.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
 Purchase.hasMany(PurchaseItem, { foreignKey: 'purchaseId', as: 'items' });
 PurchaseItem.belongsTo(Purchase, { foreignKey: 'purchaseId', as: 'purchase' });
 
@@ -188,6 +191,9 @@ StockMovement.belongsTo(Product, { foreignKey: 'productId', as: 'product' });
 
 Warehouse.hasMany(StockMovement, { foreignKey: 'warehouseId', as: 'stockMovements' });
 StockMovement.belongsTo(Warehouse, { foreignKey: 'warehouseId', as: 'warehouse' });
+
+User.hasMany(StockMovement, { foreignKey: 'userId', as: 'stockMovements' });
+StockMovement.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
 // Returns
 Sale.hasMany(Return, { foreignKey: 'saleId', as: 'returns' });
