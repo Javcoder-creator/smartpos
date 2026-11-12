@@ -12,6 +12,7 @@ import { BranchesPage } from '@/pages/branches/BranchesPage';
 import { InventoryPage } from '@/pages/inventory/InventoryPage';
 import { PurchasesPage } from '@/pages/purchases/PurchasesPage';
 import { SuppliersPage } from '@/pages/suppliers/SuppliersPage';
+import { POSPage } from '@/pages/pos/POSPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { Card } from '@/components/ui/Card';
 
@@ -51,12 +52,7 @@ export const router = createBrowserRouter([
           { path: '/dashboard', element: <DashboardPage /> },
           {
             path: '/pos',
-            element: (
-              <ModulePlaceholder
-                title="POS Kassa moduli"
-                desc="Tezkor kassa checkout, shtrix-kod skaneri, chek chop etish va to‘lovlar"
-              />
-            ),
+            element: <POSPage />,
           },
           {
             path: '/products',

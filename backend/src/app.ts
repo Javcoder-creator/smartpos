@@ -18,6 +18,9 @@ import { warehouseRoutes } from './modules/warehouse';
 import { inventoryRoutes } from './modules/inventory';
 import { supplierRoutes } from './modules/supplier';
 import { purchaseRoutes } from './modules/purchase';
+import { shiftRoutes } from './modules/shift';
+import { saleRoutes } from './modules/sale';
+import { customerRoutes } from './modules/customer';
 
 const app = express();
 
@@ -65,6 +68,9 @@ app.use('/api/warehouses', warehouseRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/purchases', purchaseRoutes);
+app.use('/api/shifts', shiftRoutes);
+app.use('/api/sales', saleRoutes);
+app.use('/api/customers', customerRoutes);
 
 // Global error handler (must be last)
 app.use(errorHandler);
