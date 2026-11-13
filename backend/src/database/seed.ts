@@ -11,6 +11,8 @@ import {
 
 export async function runSeeds() {
   console.log('🌱 Starting database seeding...');
+  await sequelize.sync({ alter: true });
+  console.log('✅ Database models synchronized');
 
   // 1. Roles
   const rolesData = [

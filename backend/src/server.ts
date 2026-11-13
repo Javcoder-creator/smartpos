@@ -27,10 +27,27 @@ io.on('connection', (socket) => {
 
 const PORT = env.PORT || 5000;
 
-server.listen(PORT, () => {
-  logger.info(`🚀 SMARTPOS API running on port ${PORT}`);
-  logger.info(`📍 Environment: ${env.NODE_ENV}`);
-});
+async function start() {
+  try {
+    const { sequelize } = await import('./database/models');
+    await sequelize.authenticate();
+    logger.info('✅ PostgreSQL connected successfully');
+
+    // In production or first start, ensure tables and seed exist
+    await sequelize.sync({ alter: false });
+    const { runSeeds } = await import('./database/seed');
+    await runSeeds();
+  } catch (err) {
+    logger.error('Database connection/sync warning:', err);
+  }
+
+  server.listen(PORT, () => {
+    logger.info(`🚀 SMARTPOS API running on port ${PORT}`);
+    logger.info(`📍 Environment: ${env.NODE_ENV}`);
+  });
+}
+
+start();
 
 // Graceful shutdown
 const gracefulShutdown = (signal: string) => {
