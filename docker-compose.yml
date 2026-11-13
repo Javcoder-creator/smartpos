@@ -49,6 +49,7 @@ services:
     environment:
       NODE_ENV: production
       PORT: 5000
+      DATABASE_URL: ${DATABASE_URL:-postgres://${DB_USER:-postgres}:${DB_PASSWORD:-postgres_secure_2026}@postgres:5432/${DB_NAME:-smartpos}}
       DB_HOST: postgres
       DB_PORT: 5432
       DB_NAME: ${DB_NAME:-smartpos}
@@ -56,9 +57,10 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-postgres_secure_2026}
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-${JWT_SECRET:-super_secret_jwt_access_token_key_2026_uz}}
       JWT_SECRET: ${JWT_SECRET:-super_secret_jwt_access_token_key_2026_uz}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-super_secret_jwt_refresh_token_key_2026_uz}
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
       CLICK_SECRET_KEY: ${CLICK_SECRET_KEY:-click_test_secret}
       PAYME_KEY: ${PAYME_KEY:-payme_test_secret}
     depends_on:
