@@ -6,6 +6,10 @@ import {
   Permission,
   RolePermission,
   SubscriptionPlan,
+  Business,
+  Branch,
+  Warehouse,
+  Subscription,
   User,
 } from './models';
 
@@ -232,6 +236,137 @@ export async function runSeeds() {
         emailVerifiedAt: new Date(),
       });
       console.log('✅ Super admin user created: super@smartpos.uz / Admin@123');
+    }
+  }
+
+  // 6. Demo Business ("Smart Market") with accounts for every role
+  const [demoBiz] = await Business.findOrCreate({
+    where: { slug: 'smart-market' },
+    defaults: {
+      id: uuidv4(),
+      name: 'Smart Market MCHJ',
+      slug: 'smart-market',
+      email: 'market@smartpos.uz',
+      phone: '+998901112233',
+      city: 'Toshkent',
+      address: 'Amir Temur ko‘chasi, 45-uy',
+      currency: 'UZS',
+      timezone: 'Asia/Tashkent',
+      defaultLanguage: 'uz',
+      isActive: true,
+    },
+  });
+
+  const [demoBranch] = await Branch.findOrCreate({
+    where: { businessId: demoBiz.id, isMain: true },
+    defaults: {
+      id: uuidv4(),
+      businessId: demoBiz.id,
+      name: 'Chilonzor filiali',
+      isMain: true,
+      isActive: true,
+    },
+  });
+
+  await Warehouse.findOrCreate({
+    where: { businessId: demoBiz.id, isDefault: true },
+    defaults: {
+      id: uuidv4(),
+      businessId: demoBiz.id,
+      branchId: demoBranch.id,
+      name: 'Asosiy ombor',
+      isDefault: true,
+      isActive: true,
+    },
+  });
+
+  const businessPlan = await SubscriptionPlan.findOne({ where: { slug: 'business' } });
+  if (businessPlan) {
+    await Subscription.findOrCreate({
+      where: { businessId: demoBiz.id },
+      defaults: {
+        id: uuidv4(),
+        businessId: demoBiz.id,
+        planId: businessPlan.id,
+        status: 'active',
+        startDate: new Date(),
+        endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+        amount: businessPlan.annualPrice,
+        billingCycle: 'annual',
+        autoRenew: true,
+      },
+    });
+  }
+
+  // Common demo password: Password@123
+  const defaultHashedPassword = await bcrypt.hash('Password@123', 10);
+
+  const demoEmployees = [
+    {
+      email: 'owner@smartpos.uz',
+      firstName: 'Farrux',
+      lastName: 'Rustamov',
+      roleSlug: 'business_owner',
+      phone: '+998901000001',
+    },
+    {
+      email: 'admin@smartpos.uz',
+      firstName: 'Javohir',
+      lastName: 'Karimov',
+      roleSlug: 'administrator',
+      phone: '+998901000002',
+    },
+    {
+      email: 'menejer@smartpos.uz',
+      firstName: 'Sardor',
+      lastName: 'Aliyev',
+      roleSlug: 'manager',
+      phone: '+998901000003',
+    },
+    {
+      email: 'kassir@smartpos.uz',
+      firstName: 'Madina',
+      lastName: 'Sobirova',
+      roleSlug: 'cashier',
+      phone: '+998901000004',
+    },
+    {
+      email: 'ombor@smartpos.uz',
+      firstName: 'Bekzod',
+      lastName: 'Nazarov',
+      roleSlug: 'warehouse_manager',
+      phone: '+998901000005',
+    },
+    {
+      email: 'buxgalter@smartpos.uz',
+      firstName: 'Dilnoza',
+      lastName: 'Azimova',
+      roleSlug: 'accountant',
+      phone: '+998901000006',
+    },
+  ];
+
+  for (const emp of demoEmployees) {
+    const role = roleMap.get(emp.roleSlug);
+    if (!role) continue;
+
+    const existingUser = await User.findOne({ where: { email: emp.email } });
+    if (!existingUser) {
+      await User.create({
+        id: uuidv4(),
+        businessId: demoBiz.id,
+        branchId: demoBranch.id,
+        email: emp.email,
+        phone: emp.phone,
+        password: defaultHashedPassword,
+        firstName: emp.firstName,
+        lastName: emp.lastName,
+        roleId: role.id,
+        isActive: true,
+        language: 'uz',
+        emailVerifiedAt: new Date(),
+      });
+      console.log(`✅ Demo user seeded: ${emp.email} (${emp.roleSlug})`);
     }
   }
 
