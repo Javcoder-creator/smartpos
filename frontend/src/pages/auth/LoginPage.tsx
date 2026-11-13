@@ -107,21 +107,6 @@ export const LoginPage: React.FC = () => {
         </Button>
       </form>
 
-      {/* Demo Credentials Box */}
-      <div className="mt-6 p-3 bg-emerald-50/60 border border-emerald-200/60 rounded-xl text-xs text-emerald-900">
-        <p className="font-bold text-[11px] uppercase tracking-wider text-emerald-800 mb-1">
-          Sinov hisoblari:
-        </p>
-        <div className="flex justify-between text-[11px] py-0.5">
-          <span className="font-semibold">Do‘kon egasi:</span>
-          <span className="font-mono">market@smartpos.uz / Password123!</span>
-        </div>
-        <div className="flex justify-between text-[11px] py-0.5">
-          <span className="font-semibold">Super Admin:</span>
-          <span className="font-mono">super@smartpos.uz / Admin@123</span>
-        </div>
-      </div>
-
       <div className="mt-6 text-center text-xs text-gray-500">
         {t('auth.noAccount')}{' '}
         <Link to="/register" className="font-bold text-[#1e3a5f] hover:text-[#10b981] transition-colors">
